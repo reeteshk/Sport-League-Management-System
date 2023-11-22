@@ -1,6 +1,10 @@
 EXEC sp_who2
 --Run kill spid for each process that is using the database to be dropped.
 kill <<processid>> -- Kill 57
+SELECT request_session_id
+FROM sys.dm_tran_locks
+WHERE resource_database_id = DB_ID('G_MAIN_DE')
+SELECT name FROM sys.databases;
 
 USE master
 
@@ -253,25 +257,31 @@ VALUES
 
 GO
 
-GO
-
-INSERT INTO [admin] (adminId,adminRole,adminPermissions,joiningDate,yearsOfExperience,lastLogin) 
-VALUES (,'Head Admin','Master','2019-05-20', dbo.CalculateYearsOfExperience('2019-05-20'),GETDATE()),
-        (,'Head Admin','Master','2021-01-15', dbo.CalculateYearsOfExperience('2021-01-15'),GETDATE()),
-        (,'Head Admin','Master','2020-08-07', dbo.CalculateYearsOfExperience('2020-08-07'),GETDATE()),
-        (,'Head Admin','Master','2018-12-01', dbo.CalculateYearsOfExperience('2018-12-01'),GETDATE()),
-        (,'Head Admin','Master','2017-03-10', dbo.CalculateYearsOfExperience('2017-03-10'),GETDATE());
+SELECT * FROM [user]
 
 GO
 
-ALTER FUNCTION dbo.CalculateYearsOfExperience (@JoiningDate DATE)
+CREATE FUNCTION dbo.CalculateYearsOfExperience (@JoiningDate DATE)
 RETURNS INT
 AS
 BEGIN
     DECLARE @CurrentDate DATE = GETDATE();
 
     RETURN DATEDIFF(YEAR, @JoiningDate, @CurrentDate);
-END;
+END
+
+GO
+
+INSERT INTO [admin] (adminId,adminRole,adminPermissions,joiningDate,yearsOfExperience,lastLogin) 
+VALUES (1010,'Head Admin','Master','2019-05-20', dbo.CalculateYearsOfExperience('2019-05-20'),GETDATE()),
+        (1011,'Head Admin','Master','2021-01-15', dbo.CalculateYearsOfExperience('2021-01-15'),GETDATE()),
+        (1012,'Head Admin','Master','2020-08-07', dbo.CalculateYearsOfExperience('2020-08-07'),GETDATE()),
+        (1013,'Head Admin','Master','2018-12-01', dbo.CalculateYearsOfExperience('2018-12-01'),GETDATE()),
+        (1014,'Head Admin','Master','2017-03-10', dbo.CalculateYearsOfExperience('2017-03-10'),GETDATE());
+
+GO
+
+SELECT * FROM [admin] a JOIN [user] u ON a.adminId=u.userId
 
 GO
 
@@ -293,5 +303,76 @@ GO
 
 EXEC insertToAdminTable @adminRole='Head Admin', @adminPermissions='Master', @joiningDate='2019-01-15'
 
-select * from [user]
-select * from admin
+GO
+
+INSERT INTO [teamStaff] (teamStaffId,playingCountry,staffType) 
+VALUES (1000,'USA','Coach'),
+        (1001,'USA','Player'),
+        (1003,'USA','Player'),
+        (1005,'USA','Player'),
+        (1006,'USA','Player'),
+        (1008,'UK','Player');
+
+SELECT * FROM [teamStaff] t JOIN [user] u ON t.teamStaffId=u.userId
+
+GO
+
+CREATE PROC insertToTeamStaffTable @playingCountry NVARCHAR(100), @staffType NVARCHAR(50) AS 
+BEGIN
+    DECLARE @message VARCHAR(100)
+    IF EXISTS (SELECT userId FROM [user] WHERE userType = 'TeamStaff' AND NOT EXISTS (SELECT 1 FROM [teamStaff] WHERE teamStaffId = userId))
+    BEGIN
+        INSERT INTO [teamStaff] (teamStaffId,playingCountry,staffType)  
+        SELECT userId, @playingCountry AS playingCountry, @staffType AS staffType 
+        FROM [user] WHERE userType = 'TeamStaff' AND NOT EXISTS (SELECT 1 FROM [teamStaff] WHERE teamStaffId = userId)
+    END
+END
+
+INSERT INTO [viewer] (viewerId,favoriteTeam,languagePreference) 
+VALUES (1002,'RedSox','English'), 
+        (1004,'RedSox','English'), 
+        (1007,'RedSox','Spanish'), 
+        (1009,'Yankees','English');
+
+SELECT * FROM [viewer] v JOIN [user] u ON v.viewerId=u.userId
+
+INSERT INTO [player] (playerId,[position],isSubstitute,minutesPlayed) 
+VALUES (1001, 'Pitcher', 0, 102), 
+        (1003, 'Catcher', 0, 109), 
+        (1005, 'Outfielder', 1, 0), 
+        (1006, 'Infielder', 0, 64), 
+        (1008, 'Pitcher', 0, 120);
+
+SELECT * FROM [player] p JOIN [user] u ON p.playerId=u.userId JOIN [teamStaff] t ON t.teamStaffId=p.playerId
+
+INSERT INTO [coach] (coachId, coachingExperience, specialization, coachingPhilosophy) 
+VALUES (1000, 5, 'Pitching and bullpen', 'Strong leadership skills')
+
+SELECT * FROM [coach] c JOIN [user] u ON c.coachId=u.userId JOIN [teamStaff] t ON t.teamStaffId=c.coachId
+
+INSERT INTO [skills] (skillId, skillName, skillDescription)
+VALUES
+  (1, 'Batting', 'Ability to hit the baseball with the bat'),
+  (2, 'Pitching', 'Skill of throwing the baseball to the batter'),
+  (3, 'Fielding', 'Ability to catch and play the ball in the field'),
+  (4, 'Base Running', 'Skill of running bases efficiently'),
+  (5, 'Catching', 'Skill of catching pitched balls as a catcher'),
+  (6, 'Throwing Accuracy', 'Ability to throw the ball accurately to a target'),
+  (7, 'Team Coordination', 'Working effectively with teammates on the field'),
+  (8, 'Game Strategy', 'Understanding and implementing strategic plays'),
+  (9, 'Physical Fitness', 'Maintaining good physical condition for peak performance'),
+  (10, 'Sportsmanship', 'Displaying fair play and respect for opponents');
+
+SELECT * FROM [skills]
+
+SELECT * FROM playerSkills
+
+INSERT INTO [playerSkills] (playerId, skillId)
+VALUES
+  (1001, 1), (1001, 2), (1001, 6), (1001, 8),
+  (1003, 2), (1003, 5), (1003, 7),
+  (1005, 3), (1005, 6), (1005, 7), (1005, 9),
+  (1006, 3), (1006, 4), (1006, 7),
+  (1008, 1), (1008, 2), (1008, 6), (1008, 8);
+
+SELECT * FROM player p JOIN playerSkills p_s ON p.playerId=p_s.playerId JOIN skills s ON p_s.skillId=s.skillId
