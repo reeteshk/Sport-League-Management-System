@@ -1,10 +1,10 @@
-EXEC sp_who2
---Run kill spid for each process that is using the database to be dropped.
-kill <<processid>> -- Kill 57
-SELECT request_session_id
-FROM sys.dm_tran_locks
-WHERE resource_database_id = DB_ID('G_MAIN_DE')
-SELECT name FROM sys.databases;
+-- EXEC sp_who2
+-- --Run kill spid for each process that is using the database to be dropped.
+-- kill <<processid>> -- Kill 57
+-- SELECT request_session_id
+-- FROM sys.dm_tran_locks
+-- WHERE resource_database_id = DB_ID('G_MAIN_DE')
+-- SELECT name FROM sys.databases;
 
 USE master
 
@@ -170,7 +170,7 @@ GO
 --Done
 -- Contract table
 CREATE TABLE [contract] (
-  contractId INT PRIMARY KEY,
+  contractId INT PRIMARY KEY IDENTITY(3000, 1),
   [description] NVARCHAR(255),
   startDate DATETIME,
   endDate DATETIME,
@@ -376,3 +376,23 @@ VALUES
   (1008, 1), (1008, 2), (1008, 6), (1008, 8);
 
 SELECT * FROM player p JOIN playerSkills p_s ON p.playerId=p_s.playerId JOIN skills s ON p_s.skillId=s.skillId
+
+INSERT INTO [team] (teamId, teamName, teamLocation, sponsorship) 
+VALUES (1, 'RedSoX', 'Boston', 'MassMutual'), 
+        (2, 'Yankees', 'New York', 'Starr insurance')
+
+-- Insert values into the contract table for players
+INSERT INTO [contract] ([description], startDate, endDate, teamId, teamStaffId, isTeamCaptain)
+VALUES
+  ('Player Contract for Jane Smith', '2023-01-01', '2023-12-31', 1, 1001, 1),
+  ('Player Contract for Alice TeamStaff', '2023-01-01', '2023-12-31', 1, 1003, 0),
+  ('Player Contract for Lisa TeamStaff', '2023-01-01', '2023-12-31', 2, 1005, 0),
+  ('Player Contract for Mike TeamStaff', '2023-01-01', '2023-12-31', 2, 1006, 0),
+  ('Player Contract for David TeamStaff', '2023-01-01', '2023-12-31', 1, 1008, 0);
+
+-- Insert values into the contract table for coaches
+INSERT INTO [contract] ([description], startDate, endDate, teamId, teamStaffId, isTeamCaptain)
+VALUES
+  ('Coach Contract for John Doe', '2023-01-01', '2023-12-31', 1, 1000, 0);
+
+SELECT * FROM [contract]
