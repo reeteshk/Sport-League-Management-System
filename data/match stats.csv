@@ -1,0 +1,16 @@
+playerStatsId,matchPlayerId,playerId,score,contractId,description,startDate,endDate,teamId,teamStaffId,isTeamCaptain,teamId,teamName,teamLocation,sponsorship
+1,1,1001,15,3000,Team Captain Contract for Player 1001,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1001,1,1,RedSoX,Boston,MassMutual
+10,1,1018,17,3001,Team Captain Contract for Player 1018,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,2,1018,1,2,Yankees,New York,Starr insurance
+2,2,1002,20,3002,Player Contract for Player 1002,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1002,0,1,RedSoX,Boston,MassMutual
+3,3,1003,18,3003,Player Contract for Player 1003,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1003,0,1,RedSoX,Boston,MassMutual
+4,4,1004,12,3004,Player Contract for Player 1004,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1004,0,1,RedSoX,Boston,MassMutual
+5,1,1005,25,3005,Player Contract for Player 1005,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1005,0,1,RedSoX,Boston,MassMutual
+6,2,1006,10,3006,Player Contract for Player 1006,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1006,0,1,RedSoX,Boston,MassMutual
+7,3,1007,22,3007,Player Contract for Player 1007,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1007,0,1,RedSoX,Boston,MassMutual
+8,4,1008,18,3008,Player Contract for Player 1008,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1008,0,1,RedSoX,Boston,MassMutual
+9,1,1009,14,3009,Player Contract for Player 1009,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,1,1009,0,1,RedSoX,Boston,MassMutual
+11,2,1019,21,3010,Player Contract for Player 1019,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,2,1019,0,2,Yankees,New York,Starr insurance
+12,3,1021,19,3011,Player Contract for Player 1021,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,2,1021,0,2,Yankees,New York,Starr insurance
+13,4,1023,16,3012,Player Contract for Player 1023,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,2,1023,0,2,Yankees,New York,Starr insurance
+14,1,1024,23,3013,Player Contract for Player 1024,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,2,1024,0,2,Yankees,New York,Starr insurance
+15,2,1026,20,3014,Player Contract for Player 1026,2023-01-01 00:00:00.000,2023-12-31 00:00:00.000,2,1026,0,2,Yankees,New York,Starr insurance

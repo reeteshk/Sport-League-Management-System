@@ -1,0 +1,16 @@
+playerId,position,isSubstitute,minutesPlayed
+1001,Pitcher,0,102
+1002,Catcher,1,75
+1003,First Baseman,0,120
+1004,Second Baseman,1,90
+1005,Third Baseman,0,105
+1006,Shortstop,0,110
+1007,Left Fielder,1,80
+1008,Center Fielder,0,115
+1009,Right Fielder,1,88
+1018,Pitcher,0,98
+1019,Catcher,1,72
+1021,First Baseman,0,118
+1023,Second Baseman,1,82
+1024,Third Baseman,0,100
+1026,Shortstop,0,105
